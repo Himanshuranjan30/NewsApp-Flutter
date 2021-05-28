@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/screens/Newspage.dart';
+import 'package:newsapp/screens/Pagescroller.dart';
 import 'package:newsapp/widgets/HomeTiles.dart';
 import 'package:newsapp/widgets/InsightTile.dart';
 import 'package:newsapp/widgets/categorytile.dart';
@@ -64,8 +66,32 @@ class _HomePageState extends State<HomePage> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      CategoryTile("Covid", "assets/virus.png"),
-                      CategoryTile("Finance", "assets/revenue.png"),
+                      InkWell(
+                        child: CategoryTile("Covid", "assets/virus.png"),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewsPage(
+                                      category: "Covid",
+                                      link: "just a link",
+                                      photo: "assets/hat.png",
+                                      summary: "Just a summary",
+                                      title: "Title",
+                                    )),
+                          ),
+                        },
+                      ),
+                      InkWell(
+                        child: CategoryTile("Finance", "assets/revenue.png"),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PageScroller()),
+                          ),
+                        },
+                      ),
                       CategoryTile("Technology", "assets/processor.png"),
                       CategoryTile("Education", "assets/graduation.png"),
                       CategoryTile("Science", "assets/chemistry.png"),
