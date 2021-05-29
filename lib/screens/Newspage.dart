@@ -72,8 +72,7 @@ class BottomPart extends StatelessWidget {
           decoration: BoxDecoration(
             // color: Colors.black,
             image: DecorationImage(
-                image: AssetImage('assets/capricorn_4427336__340.jpg'),
-                fit: BoxFit.cover),
+                image: AssetImage('assets/hat.png'), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(15),
             color: Colors.black,
           ),
@@ -175,13 +174,14 @@ class TopImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(imageurl);
     return Container(
       color: Colors.black,
       // width: MediaQuery.of(context).size.width,
       child: ClipRRect(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-          child: Image.asset(
+          child: Image.network(
             imageurl,
           )),
     );

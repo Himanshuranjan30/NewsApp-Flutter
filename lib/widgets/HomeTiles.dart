@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeTiles extends StatelessWidget {
-  final String title;
   final String imageurl;
-  HomeTiles(this.title, this.imageurl);
+  final String articleurl;
+  HomeTiles(this.articleurl, this.imageurl);
+  void launchURL(String url) async => await launch(url);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 150,
       height: 100,
       child: Card(
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+        child: InkWell(
+          child: Image.asset(
+            imageurl,
+            fit: BoxFit.fill,
           ),
+          onTap: () async => {await launch(articleurl, forceWebView: true)},
         ),
-        borderOnForeground: true,
-        shadowColor: Colors.blue,
         shape: RoundedRectangleBorder(
-            side: new BorderSide(color: Colors.blue, width: 2.0),
-            borderRadius: BorderRadius.circular(4.0)),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
       ),
     );
   }
