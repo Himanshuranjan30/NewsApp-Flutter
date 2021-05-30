@@ -29,13 +29,51 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       fetchedNews = list.map((i) => News.fromJson(i)).toList();
     });
-    scheduleAlarm(DateTime.now(), "Notification");
+    // scheduleAlarm(DateTime.now(), "Notification");
+    scheduledNotification();
   }
 
-  void scheduleAlarm(
-      DateTime scheduledNotificationDateTime, String test) async {
-    var rng = new Random();
-    int randomNumber = rng.nextInt(1);
+  // void scheduleAlarm(
+  //     DateTime scheduledNotificationDateTime, String test) async {
+  //   var rng = new Random();
+  //   int randomNumber = rng.nextInt(1);
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'alarm_notif',
+  //     'alarm_notif',
+  //     'Channel for Alarm notification',
+  //     icon: 'logo',
+  //     largeIcon: DrawableResourceAndroidBitmap('logo'),
+  //   );
+
+  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+  //       sound: 'a_long_cold_sting.wav',
+  //       presentAlert: true,
+  //       presentBadge: true,
+  //       presentSound: true);
+  //   var platformChannelSpecifics = NotificationDetails(
+  //       android: androidPlatformChannelSpecifics,
+  //       iOS: iOSPlatformChannelSpecifics);
+
+  //   await flutterLocalNotificationsPlugin.schedule(
+  //       0,
+  //       fetchedNews[0].title,
+  //       fetchedNews[0].summary,
+  //       scheduledNotificationDateTime,
+  //       platformChannelSpecifics,
+  //       payload: fetchedNews[0].title +
+  //           "_" +
+  //           fetchedNews[0].summary +
+  //           "_" +
+  //           fetchedNews[0].article +
+  //           "_" +
+  //           fetchedNews[0].category +
+  //           "_" +
+  //           fetchedNews[0].photo);
+  // }
+
+  Future scheduledNotification() async {
+    var interval = RepeatInterval.hourly;
+
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
@@ -49,15 +87,17 @@ class _HomePageState extends State<HomePage> {
         presentAlert: true,
         presentBadge: true,
         presentSound: true);
+    var platform =
+        new NotificationDetails(android: androidPlatformChannelSpecifics);
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.schedule(
+    await flutterLocalNotificationsPlugin.periodicallyShow(
         0,
         fetchedNews[0].title,
         fetchedNews[0].summary,
-        scheduledNotificationDateTime,
+        interval,
         platformChannelSpecifics,
         payload: fetchedNews[0].title +
             "_" +
@@ -68,6 +108,12 @@ class _HomePageState extends State<HomePage> {
             fetchedNews[0].category +
             "_" +
             fetchedNews[0].photo);
+  }
+
+  //Cancel notification
+
+  Future cancelNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   @override
