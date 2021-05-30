@@ -10,7 +10,7 @@ import 'package:newsapp/widgets/InsightTile.dart';
 import 'package:newsapp/widgets/categorytile.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   // }
 
   Future scheduledNotification() async {
-    var interval = RepeatInterval.hourly;
+    var interval = RepeatInterval.everyMinute;
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
@@ -138,15 +138,23 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 32.0),
                 child: Text(
                   "Discover",
-                  style: TextStyle(
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                  style: GoogleFonts.lato(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Row(
                 children: [
-                  Text("Feed"),
+                  Text(
+                    "Feed",
+                    style: GoogleFonts.lato(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Icon(Icons.arrow_forward_sharp),
                 ],
               )
@@ -159,16 +167,16 @@ class _HomePageState extends State<HomePage> {
               child: Row(children: [
                 HomeTiles(
                     "https://indianexpress.com/section/trending/trending-globally/",
-                    "assets/Trending.jpeg"),
+                    "assets/trending.png",
+                    "Trending"),
                 HomeTiles(
                     "https://cashessentials.org/?s=crypto+currency&gclid=CjwKCAjwzMeFBhBwEiwAzwS8zJlkVS4ZBlBDVw5ItP1sNhQBS-dr-JmEuFyccTxRT1LeDr4O-k0ilBoCSGsQAvD_BwE",
-                    "assets/crypto.jpeg"),
-                HomeTiles(
-                    "https://www.thehindu.com/sci-tech/technology/weekly-bytes-instagram-insights-to-help-creators-100-million-fund-for-ai-startups-and-more/article34673492.ece",
-                    "assets/insights.jpeg"),
-                HomeTiles(
-                    "https://www.linkedin.com/jobs/search/", "assets/Job.jpeg"),
-                HomeTiles("https://tribe.kenfolios.com/", "assets/out.jpeg")
+                    "assets/crypto.png",
+                    "Crypto"),
+                HomeTiles("https://www.linkedin.com/jobs/search/",
+                    "assets/job.png", "Jobs"),
+                HomeTiles("https://tribe.kenfolios.com/", "assets/out.png",
+                    "Unorthodox")
               ]),
             ),
             SizedBox(height: 50),
@@ -287,14 +295,25 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
                   "Insights",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  style: GoogleFonts.lato(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Row(
                     children: [
-                      Text("View All"),
+                      Text(
+                        "View All",
+                        style: GoogleFonts.lato(
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Icon(Icons.arrow_forward_sharp)
                     ],
                   )),
@@ -322,8 +341,14 @@ class _HomePageState extends State<HomePage> {
               minWidth: 200.0,
               height: 35,
               color: Colors.blue,
-              child: new Text('Contact Us',
-                  style: new TextStyle(fontSize: 16.0, color: Colors.white)),
+              child: new Text(
+                'Contact Us',
+                style: GoogleFonts.lato(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onPressed: () {},
             ),
           ],

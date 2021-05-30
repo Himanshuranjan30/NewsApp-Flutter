@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryTile extends StatelessWidget {
   final String title;
@@ -21,7 +22,11 @@ class CategoryTile extends StatelessWidget {
               ),
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.lato(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
