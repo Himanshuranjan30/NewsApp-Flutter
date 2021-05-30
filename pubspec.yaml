@@ -34,7 +34,9 @@ dev_dependencies:
     sdk: flutter
   http: ^0.13.3
   url_launcher: ^6.0.4
-
+  flutter_local_notifications: ^6.0.0
+  path: ^1.8.0
+  get: ^4.1.4
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:newsapp/models/News.dart';
 import 'package:newsapp/screens/Newspage.dart';
 import 'package:newsapp/screens/Pagescroller.dart';
 import 'package:newsapp/widgets/HomeTiles.dart';
 import 'package:newsapp/widgets/InsightTile.dart';
 import 'package:newsapp/widgets/categorytile.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
+
+import '../main.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +19,62 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late List<News> fetchedNews = [];
+  Future<void> fetchNews() async {
+    String uri = "http://10.0.2.2:5000/newsbycategory/Finance";
+    var data = await http.get(Uri.parse(uri));
+    print(data.body);
+    var list = json.decode(data.body) as List;
+
+    setState(() {
+      fetchedNews = list.map((i) => News.fromJson(i)).toList();
+    });
+    scheduleAlarm(DateTime.now(), "Notification");
+  }
+
+  void scheduleAlarm(
+      DateTime scheduledNotificationDateTime, String test) async {
+    var rng = new Random();
+    int randomNumber = rng.nextInt(1);
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      icon: 'logo',
+      largeIcon: DrawableResourceAndroidBitmap('logo'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        fetchedNews[0].title,
+        fetchedNews[0].summary,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics,
+        payload: fetchedNews[0].title +
+            "_" +
+            fetchedNews[0].summary +
+            "_" +
+            fetchedNews[0].article +
+            "_" +
+            fetchedNews[0].category +
+            "_" +
+            fetchedNews[0].photo);
+  }
+
+  @override
+  void initState() {
+    fetchNews();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
