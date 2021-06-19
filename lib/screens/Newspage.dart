@@ -1,7 +1,8 @@
 import 'dart:ui';
-
+import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/models/News.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsPage extends StatefulWidget {
   String title;
@@ -23,6 +24,32 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  void launchURL(String url) async => await launch(url);
+  late String title;
+  late String summary;
+  late String Ttitle;
+  late String Tsummary;
+  bool isconverted = false;
+  final translator = GoogleTranslator();
+  void initState() {
+    title = widget.title;
+    summary = widget.summary;
+    if (isconverted) {
+      title = Ttitle;
+      summary = Tsummary;
+    }
+  }
+
+  Future<void> transalate(String title, String summary) async {
+    var ftitle = await translator.translate(title, to: 'pl');
+    var fsummary = await translator.translate(summary, to: 'pl');
+    setState(() {
+      Ttitle = ftitle.toString();
+      Tsummary = fsummary.toString();
+      isconverted = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,8 +76,12 @@ class _NewsPageState extends State<NewsPage> {
                 ],
               ),
             ),
-            BottomPart(
-              title: widget.title,
+            InkWell(
+              onTap: () async =>
+                  {await launch(widget.link, forceWebView: true)},
+              child: BottomPart(
+                title: widget.title,
+              ),
             )
           ],
         ),

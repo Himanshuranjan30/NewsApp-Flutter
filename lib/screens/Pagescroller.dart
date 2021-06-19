@@ -15,7 +15,7 @@ class PageScroller extends StatefulWidget {
 class _PageScrollerState extends State<PageScroller> {
   late List<News> fetchedNews = [];
   Future<void> fetchNews() async {
-    String uri = "http://10.0.2.2:5000/newsbycategory/${widget.category}";
+    String uri = "https://salty-shelf-10140.herokuapp.com/newsbycategory/${widget.category}";
     var data = await http.get(Uri.parse(uri));
     print(data.body);
     var list = json.decode(data.body) as List;
