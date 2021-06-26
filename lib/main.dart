@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/screens/Homepage.dart';
 import 'package:flutter/services.dart';
 import 'package:newsapp/screens/Newspage.dart';
+import 'package:newsapp/screens/Pagescroller.dart';
 import 'package:path/path.dart';
 import 'package:get/get.dart';
 
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(), // Provide light theme.
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: HomePage(),
+      home: PageScroller("Trending"),
       routes: {},
     );
   }

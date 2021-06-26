@@ -39,6 +39,7 @@ dev_dependencies:
   get: ^4.1.4
   google_fonts: ^2.1.0
   translator: ^0.1.7
+  swipedetector: ^1.2.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

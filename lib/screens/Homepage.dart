@@ -27,11 +27,13 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchInsights() async {
     String uri = "https://salty-shelf-10140.herokuapp.com/insight";
     var data = await http.get(Uri.parse(uri));
-    print(data.body);
+
     var list = json.decode(data.body) as List;
     setState(() {
       fetchedInsights = list.map((i) => Insight.fromJson(i)).toList();
     });
+    print(fetchedInsights[0].article);
+    print(fetchedInsights[1].article);
   }
 
   Future<void> fetchNews() async {
@@ -135,7 +137,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     fetchNews();
-    fetchInsights();
   }
 
   @override

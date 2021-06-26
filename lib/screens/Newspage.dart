@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:newsapp/screens/Homepage.dart';
 import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/models/News.dart';
@@ -25,28 +26,24 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   void launchURL(String url) async => await launch(url);
-  late String title;
-  late String summary;
+  late String title = widget.title;
+  late String summary = widget.summary;
   late String Ttitle;
   late String Tsummary;
   bool isconverted = false;
   final translator = GoogleTranslator();
-  void initState() {
-    title = widget.title;
-    summary = widget.summary;
-    if (isconverted) {
-      title = Ttitle;
-      summary = Tsummary;
-    }
-  }
+  // void initState() {
+  //   title = widget.title;
+  //   summary = widget.summary;
+  // }
 
-  Future<void> transalate(String title, String summary) async {
-    var ftitle = await translator.translate(title, to: 'pl');
-    var fsummary = await translator.translate(summary, to: 'pl');
+  Future<void> transalate(String title, String summary, String lancode) async {
+    var ftitle = await translator.translate(title, to: lancode);
+    var fsummary = await translator.translate(summary, to: lancode);
     setState(() {
-      Ttitle = ftitle.toString();
-      Tsummary = fsummary.toString();
-      isconverted = true;
+      this.title = ftitle.toString();
+      this.summary = fsummary.toString();
+      this.isconverted = !isconverted;
     });
   }
 
@@ -54,36 +51,73 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TopImageWidget(
-                    imageurl: widget.photo,
-                  ),
-                  TitleWidget(
-                    title: widget.title,
-                  ),
-                  DescriptionWidget(
-                    description: widget.summary,
-                  ),
-                  MutedTextWidget(),
-                  SizedBox(height: 14),
-                ],
+        body: GestureDetector(
+          onPanUpdate: (details) {
+            if (details.delta.dx > 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            }
+          },
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TopImageWidget(
+                      imageurl: widget.photo,
+                    ),
+                    TitleWidget(
+                      title: title,
+                    ),
+                    DescriptionWidget(
+                      description: summary,
+                    ),
+                    MutedTextWidget(),
+                    SizedBox(height: 14),
+                  ],
+                ),
               ),
-            ),
-            InkWell(
-              onTap: () async =>
-                  {await launch(widget.link, forceWebView: true)},
-              child: BottomPart(
-                title: widget.title,
+              // FlatButton(
+              //   onPressed: () => transalate(widget.title, widget.summary),
+              //   child: Text("Translate"),
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: Container(
+                  alignment: Alignment.bottomRight,
+                  child: RawMaterialButton(
+                    onPressed: () => isconverted
+                        ? transalate(title, summary, 'en')
+                        : transalate(title, summary, 'hi'),
+                    elevation: 2.0,
+                    fillColor: Colors.black,
+                    child: Icon(
+                      Icons.translate,
+                      size: 20.0,
+                    ),
+                    padding: EdgeInsets.all(15.0),
+                    shape: CircleBorder(),
+                  ),
+                ),
               ),
-            )
-          ],
+              InkWell(
+                onTap: () async =>
+                    {await launch(widget.link, forceWebView: true)},
+                child: BottomPart(
+                  title: title,
+                ),
+              ),
+              // FlatButton(
+              //   onPressed: () => transalate(widget.title, widget.summary),
+              //   child: Text("Translate"),
+              // )
+            ],
+          ),
         ),
       ),
     );
